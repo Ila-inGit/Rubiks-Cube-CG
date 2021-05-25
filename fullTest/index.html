@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Rubik's Cube</title>
+		<img type="hidden" src="bannerGIF.gif" height="0" width="0">
+
+		<script src="gl-matrix.js"></script>
+		<script src="verts.js"></script>
+		<script src="RubiksCube.js"></script>
+		<script src="Cube.js"></script>
+		<script src="Sticker.js"></script>
+		<script src="app.js"></script>
+
+		<script id="vertex_shader" type="x-shader/x-vertex">
+			precision mediump float;
+
+			attribute vec3 vertPosition;
+			attribute vec3 vertNormal;
+
+			attribute vec3 vertColor;
+			varying vec3 fragColor;
+
+			uniform mat4 mWorld;
+			uniform mat4 mView;
+			uniform mat4 mProj;
+
+			varying vec4 position;
+			varying vec3 normal, surfaceLight, surfaceCam;
+
+			uniform float shininess;
+			uniform vec4 ambient, diffuse, specular;
+
+			void main(){
+				position = mView * vec4(vertPosition, 1.0);
+				gl_Position = mProj * mView * mWorld * vec4(vertPosition, 1.0);
+
+				vec3 pos = -(mView * position).xyz;
+				vec3 lightPos = vec3(-1, 5, -1);
+				vec3 light = vec3(1, 1, 1);
+
+				surfaceLight = normalize(light - pos);
+			    surfaceCam = normalize(-pos);
+
+				normal = normalize(vertNormal.xyz);
+			}
+		</script>
+
+		<script id="fragment_shader" type="x-shader/x-fragment">
+			precision mediump float;
+
+			varying vec3 fragColor;
+			uniform float shininess;
+			uniform vec4 ambient, diffuse, specular;
+	 		
+	 		varying vec3 normal, surfaceLight, surfaceCam;
+
+			void main() {
+				vec4 fragColor;
+
+				vec3 H = normalize(surfaceLight + surfaceCam);
+				vec3 R = normalize(reflect(-surfaceLight, normal));
+
+				float Kd = max(dot(surfaceLight, normal), 0.0);
+			    vec4 diffuseProduct = Kd*diffuse;
+
+			    float Ks = pow(max(dot(surfaceCam, R), 0.0), shininess);
+			    vec4 specularProduct = Ks * specular;
+			    
+			    if(dot(surfaceLight, normal) < 0.0) {
+					specularProduct = vec4(0.0, 0.0, 0.0, 1.0);
+			    }
+
+			    fragColor = ambient + diffuseProduct + specularProduct;
+			    fragColor.a = 1.0;
+
+				gl_FragColor = fragColor;
+			}
+
+		</script>
+		
+	</head>
+	<body>
+		<canvas id="web_gl_canvas" width="1400" height="750">
+			Your browser does not support HTML 5.
+		</canvas>
+		<input type="button" id=button value="Press to Scramble" onClick = "scrambleCube()">
+		<input type="button" id=button value="Press to do a Random Move" onClick = "randomMove()">
+		<input type="button" id=button value="Press to Rotate" onClick = "changeRotation()"><br>
+
+	</body>
+</html>
