@@ -95,5 +95,7 @@ function Cube(rubiksCube, coordinates, color){
         mat4.copy(viewMatrix, mvMatrix);
     }
 
+	
+
     this.init();
 }
