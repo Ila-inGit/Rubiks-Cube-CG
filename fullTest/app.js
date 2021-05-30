@@ -47,20 +47,49 @@ var newTime = 0;
 var oldTime = 0;
 var theta = 0;
 
-window.onload = function main() {
-  run();
-};
+//Start from here
+window.onload = init();
 
-function run() {
+async function init() {
+  var path = window.location.pathname;
+  var page = path.split("/").pop();
+  baseDir = window.location.href.replace(page, "");
+  shaderDir = baseDir + "shaders/";
+
   canvas = document.getElementById("web_gl_canvas");
+  gl = initCanvas();
+  utils.resizeCanvasToDisplaySize(gl.canvas);
+
   canvas.onmousedown = mousedown;
   canvas.onmouseup = mouseup;
   canvas.onmousemove = mousemove;
+
+  await utils.loadFiles(
+    [shaderDir + "vertex.glsl", shaderDir + "fragment.glsl"],
+    function (shaderText) {
+      var vertexShader = utils.createShader(
+        gl,
+        gl.VERTEX_SHADER,
+        shaderText[0]
+      );
+      var fragmentShader = utils.createShader(
+        gl,
+        gl.FRAGMENT_SHADER,
+        shaderText[1]
+      );
+
+      Program = utils.createProgram(gl, vertexShader, fragmentShader);
+    }
+  );
+
+  run();
+}
+
+function run() {
   viewMatrix = mat4.create();
   projMatrix = mat4.create();
   worldMatrix = mat4.create();
 
-  gl = init();
   linkProgram(loadVertexShader(), loadFragShader());
   gl.useProgram(program);
   state.rubiksCube = new RubiksCube();
@@ -73,12 +102,11 @@ function run() {
     gl.frontFace(gl.CCW);
     gl.cullFace(gl.BACK);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
     render();
   }
 }
 
-function init() {
+async function initCanvas() {
   try {
     var tmpgl = canvas.getContext("webgl");
   } catch (e1) {
