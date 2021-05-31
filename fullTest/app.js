@@ -38,6 +38,7 @@ var state = {
 
 var gl;
 var canvas;
+var canw, canh; //Canvas client width and height
 var program;
 var viewMatrix;
 var projMatrix;
@@ -57,8 +58,21 @@ async function init() {
   shaderDir = baseDir + "shaders/";
 
   canvas = document.getElementById("web_gl_canvas");
-  gl = initCanvas();
-  utils.resizeCanvasToDisplaySize(gl.canvas);
+
+  try {
+    gl = await canvas.getContext("webgl2");
+  } catch (e1) {
+    try {
+      gl = await canvas.getContext("experimental-webl");
+    } catch (e2) {
+      throw new Error("no Webgl found.");
+    }
+  }
+
+  window.onresize = doResize;
+  canvas.width = window.innerWidth - 16;
+  canvas.height = window.innerHeight - 260;
+  //utils.resizeCanvasToDisplaySize(gl.canvas);
 
   canvas.onmousedown = mousedown;
   canvas.onmouseup = mouseup;
@@ -78,11 +92,29 @@ async function init() {
         shaderText[1]
       );
 
-      Program = utils.createProgram(gl, vertexShader, fragmentShader);
+      program = utils.createProgram(gl, vertexShader, fragmentShader);
     }
   );
 
+  //Here we can put the function call for loading the environment
+
   run();
+}
+
+//Set canvas dimensions with respect to the window dimensions
+function doResize() {
+  if (window.innerWidth > 40 && window.innerHeight > 320) {
+    canvas.width = window.innerWidth - 16;
+    canvas.height = window.innerHeight - 260;
+    canw = canvas.clientWidth;
+    canh = canvas.clientHeight;
+
+    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    //		gl.viewport(0.0, 0.0, canvas.width, canvas.height);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+
+    //		perspectiveMatrix = utils.MakePerspective(60, w/h, 0.1, 1000.0);
+  }
 }
 
 function run() {
@@ -90,8 +122,9 @@ function run() {
   projMatrix = mat4.create();
   worldMatrix = mat4.create();
 
-  linkProgram(loadVertexShader(), loadFragShader());
+  //linkProgram(loadVertexShader(), loadFragShader());
   gl.useProgram(program);
+  linkMeshToShader();
   state.rubiksCube = new RubiksCube();
 
   if (gl) {
@@ -106,19 +139,20 @@ function run() {
   }
 }
 
-async function initCanvas() {
-  try {
-    var tmpgl = canvas.getContext("webgl");
-  } catch (e1) {
-    try {
-      tmpgl = canvas.getContext("experimental-webl");
-    } catch (e2) {
-      throw new Error("no Webgl found.");
-    }
-  }
-  return tmpgl;
-}
+// async function initCanvas() {
+// try {
+// var tmpgl = canvas.getContext("webgl");
+// } catch (e1) {
+// try {
+// tmpgl = canvas.getContext("experimental-webl");
+// } catch (e2) {
+// throw new Error("no Webgl found.");
+// }
+// }
+// return tmpgl;
+// }
 
+/*
 function loadVertexShader() {
   var vertCode = document.getElementById("vertex_shader").textContent;
   var vertexShader = gl.createShader(gl.VERTEX_SHADER);
@@ -143,16 +177,10 @@ function loadFragShader() {
     throw new Error(gl.getShaderInfoLog(fragmentShader));
   }
   return fragmentShader;
-}
+}*/
 
-function linkProgram(vertexShader, fragmentShader) {
-  // Put vertex and fragment shaders together into complete program
-  program = gl.createProgram();
-  gl.attachShader(program, vertexShader);
-  gl.attachShader(program, fragmentShader);
-  gl.linkProgram(program);
-  gl.useProgram(program);
-
+//Links mesh attributes to shader attributes
+function linkMeshToShader() {
   program.vertexPosition = gl.getAttribLocation(program, "vertPosition");
   gl.enableVertexAttribArray(program.vertexPosition);
 
@@ -163,11 +191,6 @@ function linkProgram(vertexShader, fragmentShader) {
   program.diffuse = gl.getUniformLocation(program, "diffuse");
   program.specular = gl.getUniformLocation(program, "specular");
   program.shininess = gl.getUniformLocation(program, "shininess");
-
-  // make sure program was created correctly
-  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-    throw new Error(gl.getProgramInfoLog(program));
-  }
 
   gl.viewport(0, 0, canvas.width, canvas.height);
 }
