@@ -30,7 +30,7 @@ function RubiksCube() {
       }
     }
   };
-  /*
+
   this.setRotation = function (
     cubeToRotateCoordinates,
     axisToRotate,
@@ -61,7 +61,7 @@ function RubiksCube() {
       for (y = 0; y < 3; y++) {
         for (z = 0; z < 3; z++) {
           var cube = this.cubes[x][y][z];
-          // dont want to compare floats for equality 
+          // dont want to compare floats for equality
           if (
             Math.abs(cube.coordinates[0] - cubeToRotateCoordinates[0]) <
               state.EPSILON &&
@@ -70,7 +70,7 @@ function RubiksCube() {
             Math.abs(cube.coordinates[2] - cubeToRotateCoordinates[2]) <
               state.EPSILON
           ) {
-            // find cube that matches coordinates and add to chunk 
+            // find cube that matches coordinates and add to chunk
             console.log("yo" + cube.coordinates);
             this.cubeToRotate = state.rubiksCube.cubes[x][y][z];
           }
@@ -86,7 +86,7 @@ function RubiksCube() {
   };
 
   this.setChunk = function () {
-    // iterate through cubes matrix to find matches 
+    // iterate through cubes matrix to find matches
 
     var selectedChunk = this.cubeToRotate.coordinates[this.axisToRotate];
     var chunk = [];
@@ -99,7 +99,7 @@ function RubiksCube() {
             Math.abs(cube.coordinates[this.axisToRotate] - selectedChunk) <
             state.EPSILON
           ) {
-            // find cube that matches coordinates and add to chunk 
+            // find cube that matches coordinates and add to chunk
             chunk.push(cube);
           }
         }
@@ -110,7 +110,7 @@ function RubiksCube() {
 
   this.rotateChunk = function () {
     if (Math.abs(this.rotationAngle) == 90) {
-      // chunk has finished rotating 
+      // chunk has finished rotating
       this.rotationAngle = 0;
       isRotating = false;
       this.scramble();
@@ -128,7 +128,7 @@ function RubiksCube() {
     );
 
     for (i = 0; i < this.chunkToRotate.length; i++) {
-      // rotate each cube 
+      // rotate each cube
       var cube = this.chunkToRotate[i];
       vec3.transformMat4(cube.coordinates, cube.coordinates, newRotationMatrix);
       mat4.multiply(
@@ -138,7 +138,7 @@ function RubiksCube() {
       );
     }
   };
-*/
+
   this.hasWon = function () {
     const offset = 1;
     for (x = 0; x < 3; x++) {
