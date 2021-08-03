@@ -6,9 +6,11 @@
 		<script src="lib/verts.js"></script>
 		<script src="lib/models.js"></script>
 		<script src="lib/utils.js"></script>
+		<script src="lib/LoadingManager.js"></script>
 		<script src="lib/RubiksCube.js"></script>
 		<script src="lib/Cube.js"></script>
-		<script src="lib/raycast.js"></script>
+		<script src="lib/MouseEventsManager.js"></script>
+		<script src="lib/RaycastManager.js"></script>
 		<script src="lib/app.js"></script>
 		<style>
 		.slidecontainer {
@@ -85,60 +87,6 @@
 		<canvas id="my-canvas" width='800' height='450' style="background-color: white;">
 			Your browser doesn't support the Canvas Element!
 		</canvas>
-		<div class="slidecontainer">
-		  <input type="range" min="1" max="5" value="1" class="slider" id="myRange">
-		</div>
-		<div class="slidecontainer">
-		  <input type="range" min="-90" max="450" value="0" class="slider" id="rot">
-		</div>
-<!--	    <p>Effect shown: <span id="demo"></span> -->
-	    <select id="shown" onchange="setShownType(this.value);">
-	    	<option value="R">Rendering</option>
-	    	<option value="T">Texture</option>
-	    	<option value="N">Normals</option>
-	    	<option value="U">UVs</option>
-	    	<option value="E">Environment</option>
-	    </select>
-	    <span id="TxSelBl" style="display:none">
-	        <select id="TxSel" onchange="setTxSelType(this.value);">
-	        	<option value="0">Albedo</option>
-	        	<option value="1">Normal Map</option>
-	        	<option value="2">Relief Map</option>
-	        	<option value="3">Amb. Occ.</option>
-	        	<option value="4">Metallic</option>
-	        	<option value="5">Roughness</option>
-	        </select>
-	    </span>
-	    <span id="NMBl" style="display:inline">
-	    	<input type="checkbox" id="NormMap" onchange="setEffectUnifVal(0,this.checked);">
-	    	Use Normal Map
-	    </span>
-	    <span id="PMBl" style="display:inline">
-	    	<input type="checkbox" id="ParMap" onchange="setEffectUnifVal(1,this.checked);">
-	    	Use Parallax Map
-	    </span>
-	    <span id="AOBl" style="display:inline">
-	    	<input type="checkbox" id="AmbOcc" onchange="setEffectUnifVal(2,this.checked);">
-	    	Use Ambient Occlusion
-	    </span>
-	    </p>
-	    <p>Material: 
-	        <select id="MatSel" onchange="LoadTexture(this.value);">
-	        	<option value="0">Flat Cobble Moss</option>
-	        	<option value="1">Red Bricks</option>
-	        	<option value="2">Space Crate</option>
-	        	<option value="3">Scuffed Metal</option>
-	        	<option value="4">Rusted Iron</option>
-	        </select>
-	        <span id="RebAlbBox" style="display:inline">
-	        --- <input type="checkbox" id="RepAlb" onchange="ReplaceAlbedo(this.checked)">
-	        	Replace 
-	        	<span id="showAMR" style="display:none">
-	        		Albedo <input type="color" id="newAlb" value="#ffffff" onchange="setNewAlbedo(this.value);">
-	        		Metalness <input type="range" min="0" max="1000" id="newMet" onchange="updateRepMetRough(0,this.value/1000);">
-	        		Roughness <input type="range" min="0" max="1000" id="newRough" onchange="updateRepMetRough(1,this.value/1000);">
-	        	</span>
-	        </span>
 	    </p>
 	        <select id="EnvSel" onchange="setEnvSelType(this.value);">
 	        	<option value="1">Beach</option>
