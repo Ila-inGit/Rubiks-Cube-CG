@@ -8,7 +8,7 @@ in vec2 fs_uv;
 // uniform vec4 lightDir1;
 // uniform vec4 lightDir2;
 // uniform vec4 lightDir3;
-// uniform vec4 matcol;
+uniform vec4 selector;
 uniform vec3 eyePos;
 
 uniform vec4 shown;
@@ -271,6 +271,7 @@ void main() {
 	vec4 diffuse = compDiffuse(LAlightDir, LAlightCol, normalVec, diffColor, eyedirVec) + 
 				   compDiffuse(LBlightDir, LBlightCol, normalVec, diffColor, eyedirVec) +
 				   compDiffuse(LClightDir, LClightCol, normalVec, diffColor, eyedirVec);
+	diffuse = diffuse * selector.a + (1.0 - selector.a);
 
 	//SPECULAR
 	vec4 specular = compSpecular(LAlightDir, LAlightCol, normalVec, eyedirVec) +
