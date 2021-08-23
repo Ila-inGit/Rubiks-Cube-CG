@@ -21,7 +21,6 @@
 		.slidecontainer {
 		  width: 100%;
 		}
-		
 		.slider {
 		  -webkit-appearance: none;
 		  width: 100%;
@@ -32,59 +31,143 @@
 		  -webkit-transition: .2s;
 		  transition: opacity .2s;
 		}
-		
 		.slider:hover {
-		  opacity: 1;
+		  	opacity: 1;
 		}
-		
 		.slider::-webkit-slider-thumb {
-		  -webkit-appearance: none;
-		  appearance: none;
-		  width: 25px;
-		  height: 25px;
-		  background: #4CAF50;
-		  cursor: pointer;
+			-webkit-appearance: none;
+			appearance: none;
+			width: 25px;
+			height: 25px;
+			background: #4CAF50;
+			cursor: pointer;
+		}
+		.slider::-moz-range-thumb {
+			width: 25px;
+			height: 25px;
+			background: #4CAF50;
+			cursor: pointer;
+		}
+
+		.button {
+			background-color: #4caf50;
+			border: none;
+			color: white;
+			padding: 3px 32px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			margin: 4px 2px;
+			cursor: pointer;
+      	}
+		.table-effects td,
+		.table-effects th {
+			border: 1px solid #ddd;
+			padding: 8px;
+		}
+		.table-effects tr:nth-child(even) {
+			background-color: #f2f2f2;
+		}
+
+		.table-effects tr:hover {
+			background-color: #ddd;
+		}
+		.table-effects th {
+			padding-top: 12px;
+			padding-bottom: 12px;
+			text-align: left;
+			background-color: #4caf50;
+			color: white;
 		}
 		
-		.slider::-moz-range-thumb {
-		  width: 25px;
-		  height: 25px;
-		  background: #4CAF50;
-		  cursor: pointer;
+		.dropbtn {
+			background-color: #4CAF50;
+			color: white;
+			padding: 3px;
+			margin: 0% 3% 0% 0.5%;
+			font-size: 16px;
+			border: none;
+			cursor: pointer;
 		}
-		.button {
-        background-color: #4caf50;
-        border: none;
-        color: white;
-        padding: 15px 32px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-      }
-      .table-effects td,
-      .table-effects th {
-        border: 1px solid #ddd;
-        padding: 8px;
-      }
 
-      .table-effects tr:nth-child(even) {
-        background-color: #f2f2f2;
-      }
+		.dropdown {
+			position: relative;
+			display: flex;
+			align-items: center;
+		}
+		.dropdown-content {
+			display: none;
+			position: absolute;
+			background-color: #f9f9f9;
+			min-width: 160px;
+			box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+			z-index: 1;
+		}
+		.dropdown-content a {
+			color: black;
+			padding: 3px 16px;
+			text-decoration: none;
+			display: block;
+		}
+		/* The Modal (background) */
+		.modal {
+			display: none; /* Hidden by default */
+			position: fixed; /* Stay in place */
+			z-index: 1; /* Sit on top */
+			padding-top: 100px; /* Location of the box */
+			left: 0;
+			top: 0;
+			width: 100%; /* Full width */
+			height: 100%; /* Full height */
+			overflow: auto; /* Enable scroll if needed */
+			background-color: rgb(0,0,0); /* Fallback color */
+			background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+		}
+		/* Modal Content */
+		.modal-content {
+			position: relative;
+			background-color: #fefefe;
+			margin: auto;
+			padding: 0;
+			border: solid 10px;
+			border-color: #4CAF50;
+			border-radius: 3%;
+			width: 50%;
+			height: 90px;
+			box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+			-webkit-animation-name: animatetop;
+			-webkit-animation-duration: 0.4s;
+			animation-name: animatetop;
+			animation-duration: 0.4s;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
+		/* Add Animation */
+		@-webkit-keyframes animatetop {
+		from {top:-300px; opacity:0} 
+		to {top:0; opacity:1}
+		}
 
-      .table-effects tr:hover {
-        background-color: #ddd;
-      }
-
-      .table-effects th {
-        padding-top: 12px;
-        padding-bottom: 12px;
-        text-align: left;
-        background-color: #4caf50;
-        color: white;
-      }
+		@keyframes animatetop {
+		from {top:-300px; opacity:0}
+		to {top:0; opacity:1}
+		}
+		/* The Close Button */
+		.close {
+			color: #aaaaaa;
+			float: right;
+			font-size: 28px;
+			font-weight: bold;
+			margin: 1% 2% 1% 2%;
+		}
+		.close:hover,
+		.close:focus {
+			color: #000;
+			text-decoration: none;
+			cursor: pointer;
+		}
 		</style>
 	</head>
 	
@@ -93,15 +176,29 @@
 			Your browser doesn't support the Canvas Element!
 		</canvas>
 	    </p>
-	        <select id="EnvSel" onchange="setEnvSelType(this.value);">
-	        	<option value="1">Beach</option>
-	        	<option value="2">Hotel Room</option>
-	        	<option value="3">Cloudy Day</option>
-	        	<option value="4">Night View</option>
-	        	<option value="5">Sunny City</option>
-	        	<option value="-1">None</option>
-	        </select>
-			<button type="button" onclick=scramble()>Scramble</button>
+	        <div class="dropdown">
+				<h3 style="font-size: 16px; color: white;font-family: Arial, Helvetica, sans-serif; margin: 0%;">Select the background</h3>
+				<select class="dropbtn" id="EnvSel" onchange="setEnvSelType(this.value);">
+					<div class="dropdown-content">
+						<option value="1">Sunny Ocean</option>
+						<option value="2">Outer Space</option>
+						<option value="3">Cloudy Day</option>
+						<option value="4">Alien's Planet</option>
+						<option value="5">Sunny City</option>
+						<option value="-1">None</option>
+					</div>
+				</select>
+				<button class="button" id="button" value = "button" type="button" onclick="scramble('button');">Scramble</button>
+				<!-- The Modal -->
+				<div id="myModal" class="modal">
+					<!-- Modal content -->
+					<div class="modal-content">
+						<p style="font-size: 25px; color: #4CAF50;font-family: Arial, Helvetica, sans-serif; margin: 2% 2% 2% 2%;">YOU WON</p>
+						<span class="close">&times;</span>
+					</div>
+				</div>   
+			</div>
+			
 	    <p>
 	    </p>
 		<center>
@@ -117,7 +214,7 @@
 			  <tr>
 				<th>
 				  <div style="text-align: center">
-					<select id="lightEditNo" onchange="showLight(this.value);">
+					<select class="dropbtn" style="border:solid; border-color: white;" id="lightEditNo" onchange="showLight(this.value);">
 					  <option value="LA">Light A</option>
 					  <option value="LB">Light B</option>
 					  <option value="LC">Light C</option>
@@ -143,6 +240,7 @@
 						<td>
 						  <div id="LA12">
 							<select
+							  class="dropbtn"
 							  id="LAlightType"
 							  onchange="showHideUI(this.id,this.value);"
 							>
@@ -252,6 +350,7 @@
 						<td>
 						  <div id="LB12">
 							<select
+							class="dropbtn"
 							  id="LBlightType"
 							  onchange="showHideUI(this.id,this.value);"
 							>
@@ -361,6 +460,7 @@
 						<td>
 						  <div id="LC12">
 							<select
+							  class="dropbtn"
 							  id="LClightType"
 							  onchange="showHideUI(this.id,this.value);"
 							>
@@ -464,6 +564,7 @@
 				<td>
 				  <div id="A12">
 					<select
+					  class="dropbtn"
 					  id="ambientType"
 					  onchange="showHideUI(this.id,this.value);"
 					>
@@ -480,6 +581,7 @@
 				<td>
 				  <div id="D12">
 					<select
+					  class="dropbtn"
 					  id="diffuseType"
 					  onchange="showHideUI(this.id,this.value);"
 					>
@@ -495,6 +597,7 @@
 				<td>
 				  <div id="S12">
 					<select
+					class="dropbtn"
 					  id="specularType"
 					  onchange="showHideUI(this.id,this.value);"
 					>
@@ -602,6 +705,7 @@
 				<td>
 				  <div id="E12">
 					<select
+					  class="dropbtn"
 					  id="emissionType"
 					  onchange="showHideUI(this.id,this.value);"
 					>

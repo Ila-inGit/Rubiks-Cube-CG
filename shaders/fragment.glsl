@@ -271,7 +271,7 @@ void main() {
 	vec4 diffuse = compDiffuse(LAlightDir, LAlightCol, normalVec, diffColor, eyedirVec) + 
 				   compDiffuse(LBlightDir, LBlightCol, normalVec, diffColor, eyedirVec) +
 				   compDiffuse(LClightDir, LClightCol, normalVec, diffColor, eyedirVec);
-	diffuse = diffuse * selector.a + (1.0 - selector.a);
+	diffuse = diffuse * selector.a + (1.0 - selector.a) * vec4(0.5, 0.5, 0.5, 1.0);
 
 	//SPECULAR
 	vec4 specular = compSpecular(LAlightDir, LAlightCol, normalVec, eyedirVec) +
