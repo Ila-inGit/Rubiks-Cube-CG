@@ -17,7 +17,7 @@ out vec2 fs_uv;
 
 void main() {
 	fs_pos = (wMatrix * vec4(in_pos, 1.0)).xyz;
-	fs_norm = mat3(nMatrix) * in_norm; //fs_norm = (wMatrix * vec4(in_norm, 0.0)).xyz;
+	fs_norm = mat3(nMatrix) * in_norm;
 	fs_uv = in_uv;
 	
 	gl_Position = wvpMatrix * vec4(in_pos, 1.0);
