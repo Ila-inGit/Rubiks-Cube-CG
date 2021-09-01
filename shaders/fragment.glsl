@@ -10,7 +10,7 @@ uniform vec4 selector;
 uniform vec3 eyePos;
 //---------texture--------------
 uniform vec4 shown;
-uniform vec4 repMetRough;
+uniform vec4 env_select;
 uniform sampler2D u_texture;
 uniform samplerCube u_tex_Env;
 
@@ -196,8 +196,8 @@ void main() {
 	vec4 ambient = compAmbient(ambColor, normalVec);
 	
 	//Environment
-	color =  mix(texture(u_tex_Env, -eyedirVec), vec4(0.5,0.5,0.5,1.0), repMetRough.b); //mix(specFactFromEnvMap, mix(texture(u_tex_Env, -v), vec4(0.5,0.5,0.5,1.0), repMetRough.b) ,repMetRough.a);
-	
+	color =  mix(texture(u_tex_Env, -eyedirVec), vec4(0.5,0.5,0.5,1.0), env_select.b);
+
 	//Rubik's cube
 	vec4 out_color = clamp(ambient + diffuse + specular + emit, 0.0, 1.0);
 	
